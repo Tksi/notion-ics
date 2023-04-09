@@ -25,11 +25,10 @@ const SETTING = {
 	]
 };
 
-export const GET = async () => {
+export const GET = async ({ url }) => {
 	const notion = new Client({ auth: NOTION_KEY });
 
-	const databaseId = NOTION_DATABASE_ID;
-
+	const databaseId = NOTION_DATABASE_ID ?? url.pathname.split('/')[1];
 	const { results } = await notion.databases.query({
 		database_id: databaseId,
 		filter: SETTING.filter

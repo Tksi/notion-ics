@@ -1,43 +1,46 @@
+import { format, nextDay } from 'date-fns';
 import type {
-	PageObjectResponse,
-	PartialPageObjectResponse
+  PageObjectResponse,
+  PartialPageObjectResponse,
 } from '@notionhq/client/build/src/api-endpoints.d';
-import { nextDay, format } from 'date-fns';
 
 type IcsItem = {
-	BEGIN: string;
-	'DTSTART;VALUE=DATE': string;
-	'DTEND;VALUE=DATE': string;
-	UID: any;
-	SUMMARY: any;
-	END: string;
+  BEGIN: string;
+  'DTSTART;VALUE=DATE': string;
+  'DTEND;VALUE=DATE': string;
+  UID: any;
+  SUMMARY: any;
+  END: string;
 };
 
 export const generateIcsItems = (
-	results: (PageObjectResponse | PartialPageObjectResponse)[],
-	dateProp: string = 'Date',
-	prefix: string = ''
+  results: (PageObjectResponse | PartialPageObjectResponse)[],
+  dateProp = 'Date',
+  prefix = ''
 ): IcsItem[] => {
-	const body = results
-		.filter(({ properties }) => properties[dateProp]?.date)
-		.map(({ properties }) => {
-			const startDate = new Date(properties[dateProp].date.start);
-			const endDate = new Date(properties[dateProp].date.end ?? nextDay(startDate, 0));
-			return {
-				BEGIN: 'VEVENT',
-				'DTSTART;VALUE=DATE': format(startDate, 'yyyyMMdd'),
-				'DTEND;VALUE=DATE': format(endDate, 'yyyyMMdd'),
-				UID: prefix + properties.Name.title[0].plain_text,
-				SUMMARY: prefix + properties.Name.title[0].plain_text,
-				END: 'VEVENT'
-			};
-		});
+  const body = results
+    .filter(({ properties }) => properties[dateProp]?.date)
+    .map(({ properties }) => {
+      const startDate = new Date(properties[dateProp].date.start);
+      const endDate = new Date(
+        properties[dateProp].date.end ?? nextDay(startDate, 0)
+      );
 
-	return body;
+      return {
+        BEGIN: 'VEVENT',
+        'DTSTART;VALUE=DATE': format(startDate, 'yyyyMMdd'),
+        'DTEND;VALUE=DATE': format(endDate, 'yyyyMMdd'),
+        UID: prefix + properties.Name.title[0].plain_text,
+        SUMMARY: prefix + properties.Name.title[0].plain_text,
+        END: 'VEVENT',
+      };
+    });
+
+  return body;
 };
 
 export const generateIcs = (items: IcsItem[]): string => {
-	return `BEGIN:VCALENDAR
+  return `BEGIN:VCALENDAR
 PRODID:-
 VERSION:2.0
 CALSCALE:GREGORIAN
@@ -54,12 +57,12 @@ DTSTART:19700101T000000
 END:STANDARD
 END:VTIMEZONE
 ${items
-	.map((item) =>
-		Object.entries(item)
-			.map((arr) => arr.join(':'))
-			.join('\n')
-	)
-	.join('\n')}
+  .map((item) =>
+    Object.entries(item)
+      .map((arr) => arr.join(':'))
+      .join('\n')
+  )
+  .join('\n')}
 END:VCALENDAR
 `;
 };

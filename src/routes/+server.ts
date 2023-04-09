@@ -1,6 +1,7 @@
 import { json } from '@sveltejs/kit';
 import { Client } from '@notionhq/client';
 import { NOTION_KEY, NOTION_DATABASE_ID } from '$env/static/private';
+import { generateIcs, generateIcsItems } from '$lib/generateIcs';
 
 const filter = {
 	property: 'Category',
@@ -19,6 +20,10 @@ export const GET = async () => {
 		filter
 	});
 
-	return json(results);
-	return new Response('1');
+	const icsItems = generateIcsItems(results);
+	// return json(results);
+
+	// return json(generateIcs(results));
+
+	return new Response(generateIcs(icsItems));
 };

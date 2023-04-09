@@ -7,7 +7,7 @@ convert notion DB to icalender(ics)
 set `NOTION_TOKEN` and `NOTION_DATABASE_ID` in env
 (NOTION_DATABASE_ID is optional)
 
-change `SETTING` variable to fit your Notion props on [./src/routes/\[databaseId\]/+server.ts](./src/routes/[databaseId]/+server.ts)
+change `SETTING` variable to fit your Notion DB on [./src/routes/\[databaseId\]/+server.ts](./src/routes/[databaseId]/+server.ts)
 
 ```bash
 npm run dev

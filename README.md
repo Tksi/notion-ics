@@ -1,38 +1,16 @@
-# create-svelte
+# notion-ics
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+convert notion DB to icalender(ics)
 
-## Creating a project
+## setup
 
-If you're seeing this, you've probably already done this step. Congrats!
+set `NOTION_TOKEN` and `NOTION_DATABASE_ID` in env
+(NOTION_DATABASE_ID is optional)
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+change `SETTING` variable to fit your Notion props on [./src/routes/\[databaseId\]/+server.ts](./src/routes/[databaseId]/+server.ts)
 
 ```bash
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+access [http://localhost:3000/](http://localhost:3000/) OR [http://localhost:3000/<NOTION_DATABASE_ID>](http://localhost:3000/<NOTION_DATABASE_ID>)

@@ -1,4 +1,4 @@
-import { format, nextDay } from 'date-fns';
+import { addDays, format } from 'date-fns';
 import type {
   PageObjectResponse,
   PartialPageObjectResponse,
@@ -23,7 +23,7 @@ export const generateIcsItems = (
     .map(({ properties }) => {
       const startDate = new Date(properties[dateProp].date.start);
       const endDate = new Date(
-        properties[dateProp].date.end ?? nextDay(startDate, 0)
+        properties[dateProp].date.end ?? addDays(startDate, 1)
       );
 
       return {
